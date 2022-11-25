@@ -5,11 +5,7 @@ import 'package:todo/home/home_view.dart';
 import 'firebase_options.dart';
 
 /*
-Create => Файрбейте проект түзүү 
-Read => Файрбейзде түзүлгөн датаны
-Update
-Delete
-
+*CRUD*
 1. Create your project in firebase
 2. Configure your apps to use Firebase
 3. Initialize Firebase in your app => flutter pub add firebase_core
@@ -40,6 +36,12 @@ for (var doc in event.docs) {print("${doc.id} => ${doc.data()}");}});
 Алар төмөндөгүдөй: 
 1. UI жазаган файлыңызга/state'ке/ асинфрондуу функция/ db = FirebaseFirestore.instance; базасы/
 Моделге түзгөн датаны алабыз => final todo = Моделдеги дата => контроллердин text параметрлерин беребиз./await db.collection('').add(todo.ToMap());
+2. Функциянын аталышын бир кнопкага байла жана формаңызды толтуруп Файрбейзтен күтүп алыңыз.
+******************************************************************************************************************
+ПРОЕКТКЕ КОШУМЧА:
+Кнопканы басканда загрузка болсун андан кийин форманы датага жүктөсүн андан кийин форма экинчи пйджке stream. 
+1. showDialog 2. addTodo();
+3. Колдонуучунун документин агым катары алып келиңиз.
  */
 
 Future<void> main() async {

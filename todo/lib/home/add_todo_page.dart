@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -48,13 +49,18 @@ class _AddTodoState extends State<AddTodo> {
   final descriptionController = TextEditingController();
   final authorController = TextEditingController();
 
+// Firestorдогу коллекцияга биз жазган controllerлин тексттери барсын.
+// Ал үчүн асинхрондуу функция
   Future<void> addTodo() async {
+    // Firestoreог экземплярлоо то есть дата базаны алабыз.
     final db = FirebaseFirestore.instance;
+    // TodoModel датасын алабыз жана файрсторго контролдун тексттери барыш үчүн контроллерди бекитебиз жана todoга барабарлайбыз
     final todo = TodoModel(
         title: titleController.text,
         isComplated: isComplated,
         author: authorController.text,
         description: descriptionController.text);
+    // колекциядагы todosка todoнун toMapти добавитетебиз. Себеби .add Map<String, dynamic> алат.
     db.collection("todos").add(todo.toMap());
   }
 
@@ -210,7 +216,22 @@ class _AddTodoState extends State<AddTodo> {
                       onPressed: (() async {
                         //Текшерүү форма жарактуу болсо чындыкты кайтарат, же болбосо жалган.
                         if (_formKey.currentState!.validate()) {
+                          showDialog(
+                              barrierColor: Colors.black87,
+                              context: context,
+                              builder: (context) {
+                                return const CupertinoAlertDialog(
+                                  title: Text('Сураныч күтө туруңуз'),
+                                  content: CupertinoActivityIndicator(
+                                    color: Colors.orange,
+                                    radius: 30,
+                                  ),
+                                );
+                              });
                           await addTodo();
+                          // ignore: use_build_context_synchronously
+
+                          Navigator.popUntil(context, (route) => route.isFirst);
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
