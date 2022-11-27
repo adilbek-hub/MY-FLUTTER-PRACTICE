@@ -38,6 +38,30 @@ class _HomeViewState extends State<HomeView> {
     return db.collection('todos').snapshots();
   }
 
+// updateTodos деген асинхрондуу функция койдук ал todos модел алат жана Firestoreден Датабаза db алат.
+  Future<void> updateTodos(TodoModel todo) async {
+    final db = FirebaseFirestore.instance;
+    //dbден collection алат, анын ичиндеги todosту тандап алдык.
+    await db
+        .collection('todos')
+        // ID бердик, Биз берген IDни карайт.   gJwGQIX1AyqkBqEQHG6l
+        .doc(todo.id)
+        // Биз тандаган IDнин ичиндеги isComplatedтин значениясы эмне болсо ошого карамакаршы бер(!).
+        .update({'isComplated': !todo.isComplated});
+  }
+
+  // deleteTodos деген асинхрондуу функция койдук ал todos модел алат жана Firestoreден Датабаза db алат.
+  Future<void> deleteTodos(TodoModel todo) async {
+    final db = FirebaseFirestore.instance;
+    //dbден collection алат, анын ичиндеги todosту тандап алдык.
+    await db
+        .collection('todos')
+        // ID бердик, Биз берген IDни карайт.   gJwGQIX1AyqkBqEQHG6l
+        .doc(todo.id)
+        // өчүр
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,10 +91,12 @@ class _HomeViewState extends State<HomeView> {
               return Center(child: Text(snapshot.error!.toString()));
               //Же келүүчү снимок датасы менен болсо
             } else if (snapshot.hasData) {
-              // TodoModelди лист кылып аталышын todos кылдым жана барабарладым.
+              // TodoModelди лист кылып, аталышын todos кылдым жана барабарладым.
               final List<TodoModel> todos = snapshot.data!.docs
                   .map((e) =>
-                      TodoModel.fromMap(e.data() as Map<String, dynamic>))
+                      // Update кылуу учурда жазылды ..id=e.id => датага кошуча кошулду
+                      TodoModel.fromMap(e.data() as Map<String, dynamic>)
+                        ..id = e.id)
                   .toList();
               return ListView.builder(
                   itemCount: todos.length,
@@ -82,8 +108,22 @@ class _HomeViewState extends State<HomeView> {
                     return Card(
                       child: ListTile(
                         title: Text(todo.title),
-                        trailing: Checkbox(
-                            value: todo.isComplated, onChanged: ((value) {})),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Checkbox(
+                                value: todo.isComplated,
+                                onChanged: ((value) async {
+                                  // Күт дагы updateTodos()ту иштет.(ичине Checkboxтун todoсун берип койдук)
+                                  await updateTodos(todo);
+                                })),
+                            IconButton(
+                                onPressed: (() {
+                                  deleteTodos(todo);
+                                }),
+                                icon: const Icon(Icons.delete)),
+                          ],
+                        ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
