@@ -12,6 +12,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  // 3. HomeView initStatти карайт. Анын ичинде stream => readTodos(); фукцияны көрүп ушул фукцияны окуйт.
   @override
   void initStat() {
     super.initState();
@@ -33,13 +34,19 @@ class _HomeViewState extends State<HomeView> {
   }
 */
 
+// readTodos эмне кылат? Бул stream кайтарат.
   Stream<QuerySnapshot> readTodos() {
+    // Бул функция firestorдун dbсын түзүп ДатаБазага барат.
     final db = FirebaseFirestore.instance;
+    //ДатаБазадан коллекцияларды издейт. Ал издеген коллекциянын аталышы todos. Бул коллекцияга snapshot
+    //кошумча кылдык. Snapshot бул -- коллекциядагы датаны угуп турат,эгерде датада кандайдыр бир өзгөрүү
+    //болсо snapshot аны streamBuilderге билдирет.
     return db.collection('todos').snapshots();
   }
 
 // updateTodos деген асинхрондуу функция койдук ал todos модел алат жана Firestoreден Датабаза db алат.
   Future<void> updateTodos(TodoModel todo) async {
+    // Бул функция firestorдун dbсын түзүп ДатаБазага барат.
     final db = FirebaseFirestore.instance;
     //dbден collection алат, анын ичиндеги todosту тандап алдык.
     await db
@@ -79,22 +86,32 @@ class _HomeViewState extends State<HomeView> {
           // Эми агым аркылуу келүүчү сүрөттү (snapshotту) курабыз.
           builder: ((context,
               snapshot /*// Бул жерде сиз Флуттерге "снапшот" деген сөздү колдонууну айттыңыз*/) {
-            // Эгер состояние соединения равно на Состояние соединения.ожидание
+            // Эгерде биздин угуп жатканыбызды күтүп жаткан болсок
             if (snapshot.connectionState == ConnectionState.waiting) {
               // анда индикатор айланып турсун
               return const Center(
                 child: CupertinoActivityIndicator(),
               );
-              // Же снимокто кандайдыр бир ката бар болсо
+              //  Эгерде даталарды угууда кандайдыр бир каталар болсо
             } else if (snapshot.hasError) {
               // Снимоктун катасы бар экендиги тууралуу экранга toString тибинде чыгар
               return Center(child: Text(snapshot.error!.toString()));
               //Же келүүчү снимок датасы менен болсо
             } else if (snapshot.hasData) {
               // TodoModelди лист кылып, аталышын todos кылдым жана барабарладым.
+              // snapshot(угуучу).датанын ичиндеги.бирден көп <List> документти угуп атасың.
               final List<TodoModel> todos = snapshot.data!.docs
+                  //  .map аркылуу бирден көп листти (точнее документтерди) бирден кайтар.
+                  // (е) бул документтен кийинки документке которулуп иштейт.
+                  // Ушинтип .map келип (e)ни алды
                   .map((e) =>
-                      // Update кылуу учурда жазылды ..id=e.id => датага кошуча кошулду
+                      // fromMap бул Map алат дагы бизге TodoModel кайтарат. Ошентип fromMap => Map<String, dynamic> алганы үчүн
+                      // е нин data сын берип койдук. Ошондо ар бир документке караштуу даталарды бердик.
+                      //(.. эки точка TodoModel.fromMap(e.data() as Map<String, dynamic>))  аткарылгандан кийин дегенди билдирет,
+                      // эми бизге TodoModel.fromMap new TodoModel берди, new TodoModel берип бүткөндөн кийин ошол  new TodoModelдин
+                      // id син бизге келген документтин id сине барабарлап кой дедик (..id = e.id).
+                      //Update кылуу учурда жазылды ..id=e.id => TodoModel моделге кошуча кошулду.
+
                       TodoModel.fromMap(e.data() as Map<String, dynamic>)
                         ..id = e.id)
                   .toList();

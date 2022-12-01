@@ -54,14 +54,10 @@ UPDATE
 2. StreamBuilder менен иш алып баруу. Бирок StreamBuilderдин кандай тиешеси бар экенин түшүнгөн жокмун. (..id = e.id)
 3. // Күт дагы updateTodos()ту иштет.(ичине Checkboxтун todoсун берип койдук)
 DELETE
-1. UIга delete иконкасын чыгарып кой.
+1. UIга iconButton delete иконкасын чыгарып кой.
 2. асинхрондуу delete функция түз ал денесине updateTodos функциясындай эле алсын бир гана өзгөчөсү idге delete берилиш керек.
- */
-
-/*
-Экинчи аракет Update Delete
-1.
-
+3. iconButtonдун OnPressedине функцияны берип кой.
+CRUD бутту
  */
 
 Future<void> main() async {
@@ -69,5 +65,95 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // runApp MyApp() pageти окуйт.
   runApp(const MyApp());
 }
+
+
+/*
+CRUD иштөө тартиби
+
+1. Инициализация 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+  ***************************************************
+2. Модель түзүү. JSON,Factory, Map
+ class TodoModel {
+  TodoModel(
+      {this.id,
+      required this.title,
+      this.description,
+      required this.isComplated,
+      required this.author});
+  String? id;
+  final String title;
+  final String? description;
+  final bool isComplated;
+  final String author;
+*****************************************************
+3. Файрбейзге проект жана ал проектке коллекция түзүү.
+*****************************************************
+4. (home_view.dart)
+ @override
+  void initStat() {
+    super.initState();
+    readTodos();
+  }
+
+ Cloud Firestore'го ДАЙЫНДАМАЛАРДЫ КОШУУ
+Future<void> readTodos() async {
+    //Cloud Firestore үлгүсүн баштаңыз: 
+    final db = FirebaseFirestore.instance;
+    await db.collection("todos").get().then((event) {
+      for (var doc in event.docs) {
+        print("${doc.id} => ${doc.data()}");
+      }
+    });
+  }
+******************************************************
+5. (addTodo_page.dart)  
+ADD DATA => Пиложениядан форманы толтуруп кнопканы басканда датага
+ толтурулган форма барышы керек. Жаңы add файлга форма UI түзөлү. Ал форманын
+  текст талаасында валидация болушу керек. 
+*******************************************************
+6. (addTodo_page.dart)
+ Future<void> addTodo() async {
+    // Firestoreог экземплярлоо то есть дата базаны алабыз.
+    final db = FirebaseFirestore.instance;
+    // TodoModel датасын алабыз жана файрсторго контролдун тексттери барыш үчүн контроллерди бекитебиз жана todoга барабарлайбыз
+    final todo = TodoModel(
+        title: titleController.text,
+        isComplated: isComplated,
+        author: authorController.text,
+        description: descriptionController.text);
+    // колекциядагы todosка todoнун toMapти добавитетебиз. Себеби .add Map<String, dynamic> алат.
+    db.collection("todos").add(todo.toMap());
+  }
+ *****************************************************************************************************
+КЫСКАЧА CRUD ИШТӨӨ ТАРТИБИ ТУУРАЛУУ МАКАЛА.
+1. main функцияда flutterfirebase инициялзация (кирүү) болот. Ал платформага карап инициялизация болот (currentplatform).
+2. MaterialApp HomeViewну ачат. HomeViewга келип биринчи очередь initStateтеги readTodos функциясын иштетет. 
+3. readTodos эмне кылат? Бул stream кайтарат. Бул функция firestorдун db түзүп ДатаБазага барат. ДатаБазадан коллекцияларды издейт.
+Ал издеген коллекциянын аталышы todos. Бул коллекцияга snapshot кошумча кылдык. snapshot бул -- коллекциядагы датаны угуп турат,
+эгерде датада кандайдыр бир өзгөрүү болсо snapshot аны streamBuilderге дароо өзгөрүү тууралуу билдирип турат. Значит AppBarды курат,
+анан streamBuilderди курат. streamBuilder уккан сайын алмашып турат. Эми streamBuilderдин иштөө тартибине өтсөк:
+
+Эгерде биздин угуп жатканыбызды күтүп жаткан болсок
+1.  if (snapshot.connectionState == ConnectionState.waiting){
+  // анда загрузканы кайтар
+  return const Center(child: CupertinoActivityIndicator(),
+  Эгерде даталарды угууда кандайдыр бир каталар болсо 
+} else if (snapshot.hasError){
+  Экранга ката деп жаз
+return Center(child: Text(snapshot.error!.toString()));
+ Эгерде дата бар болсо 
+} else if (snapshot.hasData){
+
+}
+
+
+ */
