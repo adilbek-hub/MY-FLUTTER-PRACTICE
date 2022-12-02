@@ -5,10 +5,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:todo/home/second_page.dart';
 import 'package:todo/model/todos_model.dart';
+import 'package:todo/theme/colors.dart';
 
 //Create a AddTodo widget.
 class AddTodo extends StatefulWidget {
-  AddTodo({super.key});
+  const AddTodo({super.key});
 
   @override
   State<AddTodo> createState() => _AddTodoState();
@@ -18,6 +19,7 @@ class AddTodo extends StatefulWidget {
 // Бул класс формага тиешелүү маалыматтарды камтыйт
 class _AddTodoState extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
+  // 3. isComplated деген бир bool создавайтеттик
   bool isComplated = false;
   /*
   Текст талаасына өзгөртүүлөр менен иштөө.
@@ -45,8 +47,17 @@ class _AddTodoState extends State<AddTodo> {
  // Текст контроллерин түзүү. Кийинчерээк, аны алуу үчүн колдонуңуз
 // TextField учурдагы мааниси.
    */
+  // TextEditingController() бул ар бир TextFormFieldти контролдойт. Анын ичинде эмне жазлды, Эмне жазылыш керек, же ичине
+  //жазылган кандай форматта болуш керек, мисалы номер жазылыш керек десек болот. Же телефон номерди жазып баштоодо
+  // по умолчанию +996 деп чыгат ошого окшогондорду ушул TextEditingController() менен башкарабыз.
   final titleController = TextEditingController();
+  // TextEditingController() бул ар бир TextFormFieldти контролдойт. Анын ичинде эмне жазлды, Эмне жазылыш керек, же ичине
+  //жазылган кандай форматта болуш керек, мисалы номер жазылыш керек десек болот. Же телефон номерди жазып баштоодо
+  // по умолчанию +996 деп чыгат ошого окшогондорду ушул TextEditingController() менен башкарабыз.
   final descriptionController = TextEditingController();
+  // TextEditingController() бул ар бир TextFormFieldти контролдойт. Анын ичинде эмне жазлды, Эмне жазылыш керек, же ичине
+  //жазылган кандай форматта болуш керек, мисалы номер жазылыш керек десек болот. Же телефон номерди жазып баштоодо
+  // по умолчанию +996 деп чыгат ошого окшогондорду ушул TextEditingController() менен башкарабыз.
   final authorController = TextEditingController();
 
 // Firestorдогу коллекцияга биз жазган controllerлин тексттери барсын.
@@ -84,28 +95,39 @@ class _AddTodoState extends State<AddTodo> {
          катары иштейт.
         Форманы түзүп жатканда, GlobalKey менен камсыз кылыңыз. Бул форманы уникалдуу түрдө аныктайт жана форманы 
         кийинки кадамда текшерүүгө мүмкүндүк берет.*/
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Form(
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/ocean.jpg'),
+                  fit: BoxFit.cover)),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            // 1.Form листвюдагы бардык нерселерди бир формага ороп койдук.
+            child: Form(
+              //2. Ошол форманын ичи толтурулганы же толтурулбаганын билүү үчүн _formKey койдук
               key: _formKey,
+              //
               child: ListView(
                 children: [
                   /*2.Add a TextFormField with validation logic.
-                  Форма ордунда болгону менен, колдонуучуларга текстти киргизүүгө мүмкүнчүлүк жок. Бул TextFormField 
-                  жумушу. TextFormField виджети материалдык дизайн текст талаасын көрсөтөт жана алар пайда болгондо 
-                  текшерүү каталарын көрсөтө алат.
-                  TextFormField үчүн validator() функциясын берүү менен киргизүүнү ырастаңыз. Колдонуучунун киргизгени
-                   туура эмес болсо, валидатор функциясы ката кабарын камтыган Стринди кайтарат. Эгерде каталар жок 
-                   болсо, валидатор нөлдү кайтарышы керек.
-                  Бул мисал үчүн, TextFormField бош эмес экенине кепилдик берүүчү валидаторду түзүңүз. Ал бош болсо,
-                   достук ката билдирүүсүн кайтарыңыз.
-                  */
+                    Форма ордунда болгону менен, колдонуучуларга текстти киргизүүгө мүмкүнчүлүк жок. Бул TextFormField 
+                    жумушу. TextFormField виджети материалдык дизайн текст талаасын көрсөтөт жана алар пайда болгондо 
+                    текшерүү каталарын көрсөтө алат.
+                    TextFormField үчүн validator() функциясын берүү менен киргизүүнү ырастаңыз. Колдонуучунун киргизгени
+                     туура эмес болсо, валидатор функциясы ката кабарын камтыган Стринди кайтарат. Эгерде каталар жок 
+                     болсо, валидатор нөлдү кайтарышы керек.
+                    Бул мисал үчүн, TextFormField бош эмес экенине кепилдик берүүчү валидаторду түзүңүз. Ал бош болсо,
+                     достук ката билдирүүсүн кайтарыңыз.
+                    */
                   //Текст формасы талаасы
                   TextFormField(
                     // Title текст талаасындагы текстти контролдоо үчүн
                     controller: titleController,
                     //decoration=> жасалгалоо, кооздоо/ InputDecoration=> ички кооздолуусу, жасалгалоосу
                     decoration: const InputDecoration(
+                        //Эгер чын болсо, декорациянын контейнери [fillColor] менен толтурулат.
+                        filled: true,
+                        fillColor: AppColors.textFormFieldColor,
                         // hintText:=> тексттин подсказкасы
                         hintText: 'Title',
                         // border:=> чек арасы / OutlineInputBorder() => контр киргизүү чек арасы
@@ -137,6 +159,9 @@ class _AddTodoState extends State<AddTodo> {
                     maxLines: 7,
                     //  decoration => Текст форма талаасын жасалгалайт/InputDecoration => Текст форма талаасын жасалгалайт
                     decoration: const InputDecoration(
+                        //Эгер чын болсо, декорациянын контейнери [fillColor] менен толтурулат.
+                        filled: true,
+                        fillColor: AppColors.textFormFieldColor,
                         // hintText => Тексттин подсказкасы
                         hintText: 'Description',
                         // border:=> чек арасы / OutlineInputBorder() => контр киргизүү чек арасы
@@ -162,8 +187,8 @@ class _AddTodoState extends State<AddTodo> {
                   //ListTile с флажком. Другими словами, флажок с меткой.
                   CheckboxListTile(
                       title: const Text('Click here'),
-                      checkColor: Color.fromARGB(255, 243, 9, 9),
-                      activeColor: Colors.yellow,
+                      checkColor: Color.fromARGB(255, 255, 255, 255),
+                      activeColor: Color.fromARGB(255, 132, 252, 132),
                       tileColor: Color.fromARGB(255, 238, 198, 184),
                       // ListTile маани алат. Ал маани флажокту басканда метка пайда болуп, өчүп туруусу үчүн атайын булен.
                       value: isComplated,
@@ -182,6 +207,9 @@ class _AddTodoState extends State<AddTodo> {
                     controller: authorController,
                     //decoration=> жасалгалоо, кооздоо
                     decoration: const InputDecoration(
+                        //Эгер чын болсо, декорациянын контейнери [fillColor] менен толтурулат.
+                        filled: true,
+                        fillColor: AppColors.textFormFieldColor,
                         // Тексттин подсказкасы
                         hintText: 'Author',
                         // Чек ара сызыгын берүү
@@ -207,14 +235,14 @@ class _AddTodoState extends State<AddTodo> {
                   ),
 
                   /*3.Create a button to validate and submit the form.
-                Эми сизде текст талаасы бар форма болгондон кийин, колдонуучу маалымат тапшыра турган баскычты бериңиз.
-                Колдонуучу форманы тапшырууга аракет кылганда, форманын жарактуу экенин текшериңиз. Эгер ошондой болсо,
-                ийгиликтүү билдирүүнү көрсөтүңүз. Эгерде ал жок болсо (текст талаасында мазмун жок) ката билдирүүсүн 
-                көрсөтөт.
-                */
+                  Эми сизде текст талаасы бар форма болгондон кийин, колдонуучу маалымат тапшыра турган баскычты бериңиз.
+                  Колдонуучу форманы тапшырууга аракет кылганда, форманын жарактуу экенин текшериңиз. Эгер ошондой болсо,
+                  ийгиликтүү билдирүүнү көрсөтүңүз. Эгерде ал жок болсо (текст талаасында мазмун жок) ката билдирүүсүн 
+                  көрсөтөт.
+                  */
                   ElevatedButton(
                       onPressed: (() async {
-                        //Текшерүү форма жарактуу болсо чындыкты кайтарат, же болбосо жалган.
+                        //Текшерүү форма толтурулган болсо чындыкты кайтарат, же болбосо жалган.
                         if (_formKey.currentState!.validate()) {
                           showDialog(
                               barrierColor: Colors.black87,
@@ -228,6 +256,7 @@ class _AddTodoState extends State<AddTodo> {
                                   ),
                                 );
                               });
+                          // Загрузка болуп аткан учурда addTodo() болот.
                           await addTodo();
                           // ignore: use_build_context_synchronously
 
@@ -240,7 +269,9 @@ class _AddTodoState extends State<AddTodo> {
                       }),
                       child: const Text('basss'))
                 ],
-              )),
+              ),
+            ),
+          ),
         ));
   }
 }

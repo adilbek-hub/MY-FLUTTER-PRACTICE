@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // MaterialApp => HomeView() pageти окуйт
+      // 2. MaterialApp => HomeView() pageти окуйт
       home: const HomeView(),
     );
   }

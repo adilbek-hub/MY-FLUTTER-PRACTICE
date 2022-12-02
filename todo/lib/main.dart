@@ -65,7 +65,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // runApp MyApp() pageти окуйт.
+  // 1. runApp MyApp() pageти окуйт.
   runApp(const MyApp());
 }
 
