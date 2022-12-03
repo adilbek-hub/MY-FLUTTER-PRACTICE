@@ -71,8 +71,8 @@ class _AddTodoState extends State<AddTodo> {
         isComplated: isComplated,
         author: authorController.text,
         description: descriptionController.text);
-    // колекциядагы todosка todoнун toMapти добавитетебиз. Себеби .add Map<String, dynamic> алат.
-    db.collection("todos").add(todo.toMap());
+    // todos атту коллекцияга текст добавитетүү(add документти (id) өзү пайда кылат)
+    await db.collection("todos").add(todo.toMap());
   }
 
   @override
@@ -256,7 +256,7 @@ class _AddTodoState extends State<AddTodo> {
                                   ),
                                 );
                               });
-                          // Загрузка болуп аткан учурда addTodo() болот.
+                          // Загрузка болуп аткан учурда addTodo() болот.addTodo() функциясына барабыз
                           await addTodo();
                           // ignore: use_build_context_synchronously
 
