@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mentalhelth/constants/app_colors.dart';
 import 'package:mentalhelth/constants/text_style.dart';
 import 'package:mentalhelth/until/emotional_face.dart';
+import 'package:mentalhelth/until/exercise_tile.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -189,50 +190,8 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ]),
             ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(25),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(30),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text('Көнүгүүлөр',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)),
-                        Icon(
-                          Icons.more_horiz,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 170, 241, 173),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const ListTile(
-                        leading: Icon(Icons.favorite),
-                        title: Text('сүйлөө жөндөмдөрү'),
-                        subtitle: Text('15 тапшырма'),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    )
-                  ],
-                ),
-              ),
+            const Expanded(
+              child: ExeciseTile(),
             )
           ],
         ),

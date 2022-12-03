@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "763870543994",
+    "project_id": "form-cfb77",
+    "storage_bucket": "form-cfb77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763870543994:android:9ff200ebfff583dc917bc3",
+        "android_client_info": {
+          "package_name": "com.example.form"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763870543994-aighp98t4m5gkfucl0aeu2us10mb88j1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEJDJm205hjaNTSBqXBE6EVVeCOywY5b4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763870543994-aighp98t4m5gkfucl0aeu2us10mb88j1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,18 +38,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const[
             // ListView -  это линейный список прокручиваемых элементов.
             //Он отображает свои дочерных элементы один за другим направлении прокрутки.
             // сушествует 4 варианта построение listView
             // 1 вариант это когда ListView просто берет список дочерных элементов и делает его прокручиваемым.
-            ListView(
-              children: <Widget>[
-                Text('data'),
-                Text('data'),
-                Text('data'),
-              ],
-            )
+            // 2 вариант это конструктор builder. Конструктор принимает 2 основных параметра, это itemCount=> 
+            //количества элементов списки, и itemBuilder => для каждого элемента списка.
           ],
         ),
       ),

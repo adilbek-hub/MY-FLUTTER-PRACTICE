@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AssetsImage extends StatelessWidget {
-  const AssetsImage({super.key});
+  const AssetsImage( {super.key});
 
   @override
   Widget build(BuildContext context) {
-    const urlImaige = 'assets/Bambuk.jpg';
+    final urlImaige = 'assets/Bambuk.jpg';
+    final urlImaige2 = 'assets/Bambuk.jpg';
     return ListView(
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.all(16),
-      children: [
+      children: <Widget>[
         Center(
           child: Image.asset(
             urlImaige,
@@ -19,9 +21,6 @@ class AssetsImage extends StatelessWidget {
             width: 300,
             fit: BoxFit.cover,
           ),
-        ),
-        const SizedBox(
-          height: 16,
         ),
       ],
     );
