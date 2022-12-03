@@ -71,7 +71,9 @@ class _AddTodoState extends State<AddTodo> {
         isComplated: isComplated,
         author: authorController.text,
         description: descriptionController.text);
-    // todos атту коллекцияга текст добавитетүү(add документти (id) өзү пайда кылат)
+    // todos атту коллекцияга өзү документ жана анын датасын генерация кылып, ичине берилген
+    //датаны, биз берген датага кошуп койот.
+    // Андан кийин эң асты тараптагы Navigator.popUntil га барат.
     await db.collection("todos").add(todo.toMap());
   }
 
@@ -259,7 +261,7 @@ class _AddTodoState extends State<AddTodo> {
                           // Загрузка болуп аткан учурда addTodo() болот.addTodo() функциясына барабыз
                           await addTodo();
                           // ignore: use_build_context_synchronously
-
+                          // Биринчи учурда кайсыл пейджте болгонболсок ошол жака кайтат. (isFirst => Алгачкы жака бет алуу)
                           Navigator.popUntil(context, (route) => route.isFirst);
                           // Navigator.push(
                           //     context,
