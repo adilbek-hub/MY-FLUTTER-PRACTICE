@@ -42,7 +42,7 @@ class _HomeViewState extends State<HomeView> {
                           'Сизде сан менен кошулган тамга катталды');
                 }
               }),
-              child: Text('+'))
+              child: const Text('+'))
         ],
       ),
     );
